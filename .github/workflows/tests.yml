@@ -2,6 +2,7 @@ name: tests
 on:
   push:
   pull_request:
+  workflow_dispatch:
   # TODO: enable manual workflow runs
 jobs:
   ci:
