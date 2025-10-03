@@ -3,6 +3,9 @@ on:
   push:
   pull_request:
   workflow_dispatch:
+  # run on schedule at 00:00 every day
+  # schedule:
+  #   - cron: "0 0 * * *"
   # TODO: enable manual workflow runs
 jobs:
   ci:
