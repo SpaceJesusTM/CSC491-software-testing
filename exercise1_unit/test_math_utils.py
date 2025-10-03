@@ -17,16 +17,20 @@ def test_add_more(a,b,expected):
     assert add(a,b) == expected
 
 # TODO: test if A+B = B+A
-# def test_add_commutative():
+def test_add_commutative():
+    for _ in range(100):
+        a = np.random.randint(-1e6, 1e6)
+        b = np.random.randint(-1e6, 1e6)
+        assert add(a,b) == add(b,a)
 
 # TODO: fix add to reject non-numeric types
-# def test_add_rejects_non_numeric():
-#     with pytest.raises(TypeError):
-#         add("2", "3")
-#     with pytest.raises(TypeError):
-#         add([1], [2])
-#     with pytest.raises(TypeError):
-#         add(True, 1)
+def test_add_rejects_non_numeric():
+    with pytest.raises(TypeError):
+        add("2", "3")
+    with pytest.raises(TypeError):
+        add([1], [2])
+    with pytest.raises(TypeError):
+        add(True, 1)
 
 # === Testing Div ===
 def test_div_normal():
@@ -46,10 +50,20 @@ def test_div_precision_contract_is_float64_like():
     assert abs(res - (1/3)) < 1e-12
 
 # TODO: test div with floats
-# def test_div_floats():
+def test_div_floats():
+    assert abs(div(1.5, 0.5) - 3.0) < 1e-12
+    assert abs(div(-1.5, 0.5) + 3.0) < 1e-12
+    assert abs(div(1.5, -0.5) + 3.0) < 1e-12
+    assert abs(div(-1.5, -0.5) - 3.0) < 1e-12
 
 # TODO: test div with non-infinite denominator 
-# def test_div_rejects_nonfinite_denominator():
+def test_div_rejects_nonfinite_denominator():
+    with pytest.raises(ValueError):
+        div(1, math.inf)
+    with pytest.raises(ValueError):
+        div(1, -math.inf)
+    with pytest.raises(ValueError):
+        div(1, math.nan)
 
 # === Testing Clamp ===
 @pytest.mark.parametrize("x,lo,hi,expected", [
@@ -65,20 +79,20 @@ def test_clamp_bad_range():
         clamp(1, 5, 4)
 
 # TODO: fix clamp to reject nan values
-# def test_clamp_rejects_nan():
-#     with pytest.raises(ValueError):
-#         clamp(math.nan, 0, 10)
-#     with pytest.raises(ValueError):
-#         clamp(5, math.nan, 10)
-#     with pytest.raises(ValueError):
-#         clamp(5, 0, math.nan)
+def test_clamp_rejects_nan():
+    with pytest.raises(ValueError):
+        clamp(math.nan, 0, 10)
+    with pytest.raises(ValueError):
+        clamp(5, math.nan, 10)
+    with pytest.raises(ValueError):
+        clamp(5, 0, math.nan)
 
 # TODO: fix clamp to reject infinite values
-# def test_clamp_rejects_infinities():
-#     for bad in (math.inf, -math.inf):
-#         with pytest.raises(ValueError):
-#             clamp(bad, 0, 10)
-#         with pytest.raises(ValueError):
-#             clamp(5, bad, 10)
-#         with pytest.raises(ValueError):
-#             clamp(5, 0, bad)
+def test_clamp_rejects_infinities():
+    for bad in (math.inf, -math.inf):
+        with pytest.raises(ValueError):
+            clamp(bad, 0, 10)
+        with pytest.raises(ValueError):
+            clamp(5, bad, 10)
+        with pytest.raises(ValueError):
+            clamp(5, 0, bad)
